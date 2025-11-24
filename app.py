@@ -10,71 +10,95 @@ st.set_page_config(page_title="온라인 채널 비교 대시보드", layout="wi
 # -----------------------------
 @st.cache_data
 def load_sample_data():
+    # 네가 준 스키마 중 실제로 쓰는 컬럼만 예시값 채움:
+    # BRD_CD, SALE_DT, SHOP_ID, SHOP_NM, PART_CD, QTY, SALE_AMT
     rows = [
-        # BRD X - 자사몰 - CP
+        # ===== 브랜드 X =====
+        # X - 네이버 - CP
         {
             "BRD_CD": "X",
             "SALE_DT": "2024-01-05",
-            "SHOP_ID": "30004",
-            "SHOP_NM": "자사몰",
+            "SHOP_ID": "NAVER01",
+            "SHOP_NM": "네이버",
             "PART_CD": "3ACP7701N",   # CP
             "QTY": 3,
             "SALE_AMT": 270000,
         },
-        # BRD X - 자사몰 - DJ
+        # X - 네이버 - DJ
+        {
+            "BRD_CD": "X",
+            "SALE_DT": "2024-01-06",
+            "SHOP_ID": "NAVER01",
+            "SHOP_NM": "네이버",
+            "PART_CD": "3ADJ2201N",   # DJ
+            "QTY": 2,
+            "SALE_AMT": 230000,
+        },
+        # X - 무신사 - CP
         {
             "BRD_CD": "X",
             "SALE_DT": "2024-01-07",
-            "SHOP_ID": "30004",
-            "SHOP_NM": "자사몰",
-            "PART_CD": "3ADJ2201N",   # DJ
-            "QTY": 2,
-            "SALE_AMT": 258000,
-        },
-        # BRD X - 무신사 - CP
-        {
-            "BRD_CD": "X",
-            "SALE_DT": "2024-01-10",
             "SHOP_ID": "MUSINSA01",
             "SHOP_NM": "무신사",
             "PART_CD": "3ACP7702N",   # CP
             "QTY": 5,
             "SALE_AMT": 445000,
         },
-        # BRD X - 네이버 - DJ
+        # X - 무신사 - DJ
         {
             "BRD_CD": "X",
-            "SALE_DT": "2024-01-12",
-            "SHOP_ID": "NAVER01",
-            "SHOP_NM": "네이버",
+            "SALE_DT": "2024-01-08",
+            "SHOP_ID": "MUSINSA01",
+            "SHOP_NM": "무신사",
             "PART_CD": "3ADJ2202N",   # DJ
             "QTY": 4,
-            "SALE_AMT": 556000,
+            "SALE_AMT": 390000,
         },
-        # BRD M - 카카오 - CP
+
+        # ===== 브랜드 M =====
+        # M - 네이버 - CP
         {
             "BRD_CD": "M",
-            "SALE_DT": "2024-01-15",
-            "SHOP_ID": "KAKAO01",
-            "SHOP_NM": "카카오",
+            "SALE_DT": "2024-01-10",
+            "SHOP_ID": "NAVER01",
+            "SHOP_NM": "네이버",
             "PART_CD": "3ACP8801N",   # CP
             "QTY": 6,
-            "SALE_AMT": 474000,
+            "SALE_AMT": 480000,
         },
-        # BRD M - 자사몰 - DJ
+        # M - 네이버 - DJ
         {
             "BRD_CD": "M",
-            "SALE_DT": "2024-01-18",
-            "SHOP_ID": "510",
-            "SHOP_NM": "자사몰",
+            "SALE_DT": "2024-01-11",
+            "SHOP_ID": "NAVER01",
+            "SHOP_NM": "네이버",
             "PART_CD": "3ADJ3301N",   # DJ
-            "QTY": 2,
-            "SALE_AMT": 238000,
+            "QTY": 3,
+            "SALE_AMT": 310000,
+        },
+        # M - 무신사 - CP
+        {
+            "BRD_CD": "M",
+            "SALE_DT": "2024-01-12",
+            "SHOP_ID": "MUSINSA01",
+            "SHOP_NM": "무신사",
+            "PART_CD": "3ACP8802N",   # CP
+            "QTY": 4,
+            "SALE_AMT": 360000,
+        },
+        # M - 무신사 - DJ
+        {
+            "BRD_CD": "M",
+            "SALE_DT": "2024-01-13",
+            "SHOP_ID": "MUSINSA01",
+            "SHOP_NM": "무신사",
+            "PART_CD": "3ADJ3302N",   # DJ
+            "QTY": 5,
+            "SALE_AMT": 420000,
         },
     ]
 
     df = pd.DataFrame(rows)
-    # 날짜형 변환
     df["SALE_DT"] = pd.to_datetime(df["SALE_DT"])
     # 카테고리 컬럼 (3~4번째 글자)
     df["CAT"] = df["PART_CD"].str[2:4]
@@ -97,12 +121,12 @@ start_date = col1.date_input("시작일", date(2024, 1, 1))
 end_date = col2.date_input("종료일", date(2024, 1, 31))
 
 # 3) SHOP_NM 채널 선택
-shop_list = sorted(df_raw["SHOP_NM"].unique().tolist())
-shops = st.multiselect("채널 선택", shop_list, default=shop_list[:2])
+shop_list = sorted(df_raw["SHOP_NM"].unique().tolist())  # ["네이버", "무신사"]
+shops = st.multiselect("채널 선택", shop_list, default=shop_list)
 
 # 4) 카테고리 = PART_CD 중 3~4번째 글자
-category_list = sorted(df_raw["CAT"].unique().tolist())
-categories = st.multiselect("카테고리 선택", category_list, default=category_list[:2])
+category_list = sorted(df_raw["CAT"].unique().tolist())  # ["CP", "DJ"]
+categories = st.multiselect("카테고리 선택", category_list, default=category_list)
 
 # -----------------------------
 # 필터링
