@@ -157,19 +157,49 @@ else:
         .reset_index()
     )
 
-    st.subheader("채널 · 카테고리별 매출 vs 수량 분포")
+st.subheader("채널 · 카테고리별 매출 vs 수량 분포")
 
-    fig = px.scatter(
-        scatter_df,
-        x="SALE_AMT",
-        y="QTY",
-        color="SHOP_NM",
-        text="CAT",
-        size="SALE_AMT",
-        labels={"SALE_AMT": "매출", "QTY": "수량"},
-    )
-    fig.update_traces(textposition="top center")
-    st.plotly_chart(fig, use_container_width=True)
+fig = px.scatter(
+    scatter_df,
+    x="SALE_AMT",
+    y="QTY",
+    color="SHOP_NM",
+    text="CAT",
+    size="SALE_AMT",
+    size_max=60,  # 점 너무 커지는 것 방지
+    labels={"SALE_AMT": "매출", "QTY": "수량"},
+    hover_data={
+        "SHOP_NM": True,
+        "CAT": True,
+        "SALE_AMT": True,
+        "QTY": True,
+    }
+)
 
-    with st.expander("📄 집계 데이터 보기"):
-        st.dataframe(scatter_df)
+# 점 테두리 추가 (시인성 ↑)
+fig.update_traces(
+    marker=dict(
+        line=dict(width=1, color="black")
+    ),
+    textfont=dict(size=14)
+)
+
+# 레이아웃 더 깔끔하게
+fig.update_layout(
+    title_font_size=20,
+    xaxis=dict(
+        title="매출",
+        gridcolor="rgba(200,200,200,0.3)",
+        zeroline=False,
+        tickformat=",d"
+    ),
+    yaxis=dict(
+        title="수량",
+        gridcolor="rgba(200,200,200,0.3)",
+        zeroline=False,
+    ),
+    legend_title_text="채널",
+    plot_bgcolor="white",
+)
+
+st.plotly_chart(fig, use_container_width=True)
