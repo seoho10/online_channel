@@ -58,7 +58,10 @@ categories = st.multiselect("카테고리 선택", category_list, default=catego
 df = df_raw.copy()
 
 df = df[df["BRD_CD"] == brand]
-df = df[(df["SALE_DT"] >= pd.to_datetime(start_date)) & (df["SALE_DT"] <= pd.to_datetime(end_date))]
+df = df[
+    (df["SALE_DT"] >= pd.to_datetime(start_date))
+    & (df["SALE_DT"] <= pd.to_datetime(end_date))
+]
 
 if shops:
     df = df[df["SHOP_NM"].isin(shops)]
@@ -87,3 +90,10 @@ else:
         color="SHOP_NM",
         text="CAT",
         size="SALE_AMT",
+        labels={"SALE_AMT": "매출", "SALE_QTY": "수량"},
+    )
+    fig.update_traces(textposition="top center")
+    st.plotly_chart(fig, use_container_width=True)
+
+    with st.expander("📄 집계 데이터 보기"):
+        st.dataframe(scatter_df)
