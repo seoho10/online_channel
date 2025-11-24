@@ -10,92 +10,35 @@ st.set_page_config(page_title="온라인 채널 비교 대시보드", layout="wi
 # -----------------------------
 @st.cache_data
 def load_sample_data():
-    # 네가 준 스키마 중 실제로 쓰는 컬럼만 예시값 채움:
-    # BRD_CD, SALE_DT, SHOP_ID, SHOP_NM, PART_CD, QTY, SALE_AMT
+    # BRD_CD, SALE_DT, SHOP_ID, SHOP_NM, PART_CD, QTY, SALE_AMT 만 사용
     rows = [
         # ===== 브랜드 X =====
         # X - 네이버 - CP
-        {
-            "BRD_CD": "X",
-            "SALE_DT": "2024-01-05",
-            "SHOP_ID": "NAVER01",
-            "SHOP_NM": "네이버",
-            "PART_CD": "3ACP7701N",   # CP
-            "QTY": 3,
-            "SALE_AMT": 270000,
-        },
+        {"BRD_CD": "X", "SALE_DT": "2024-01-05", "SHOP_ID": "NAVER01",
+         "SHOP_NM": "네이버", "PART_CD": "3ACP7701N", "QTY": 3, "SALE_AMT": 270000},
         # X - 네이버 - DJ
-        {
-            "BRD_CD": "X",
-            "SALE_DT": "2024-01-06",
-            "SHOP_ID": "NAVER01",
-            "SHOP_NM": "네이버",
-            "PART_CD": "3ADJ2201N",   # DJ
-            "QTY": 2,
-            "SALE_AMT": 230000,
-        },
+        {"BRD_CD": "X", "SALE_DT": "2024-01-06", "SHOP_ID": "NAVER01",
+         "SHOP_NM": "네이버", "PART_CD": "3ADJ2201N", "QTY": 2, "SALE_AMT": 310000},
         # X - 무신사 - CP
-        {
-            "BRD_CD": "X",
-            "SALE_DT": "2024-01-07",
-            "SHOP_ID": "MUSINSA01",
-            "SHOP_NM": "무신사",
-            "PART_CD": "3ACP7702N",   # CP
-            "QTY": 5,
-            "SALE_AMT": 445000,
-        },
+        {"BRD_CD": "X", "SALE_DT": "2024-01-07", "SHOP_ID": "MUSINSA01",
+         "SHOP_NM": "무신사", "PART_CD": "3ACP7702N", "QTY": 5, "SALE_AMT": 360000},
         # X - 무신사 - DJ
-        {
-            "BRD_CD": "X",
-            "SALE_DT": "2024-01-08",
-            "SHOP_ID": "MUSINSA01",
-            "SHOP_NM": "무신사",
-            "PART_CD": "3ADJ2202N",   # DJ
-            "QTY": 4,
-            "SALE_AMT": 390000,
-        },
+        {"BRD_CD": "X", "SALE_DT": "2024-01-08", "SHOP_ID": "MUSINSA01",
+         "SHOP_NM": "무신사", "PART_CD": "3ADJ2202N", "QTY": 4, "SALE_AMT": 420000},
 
         # ===== 브랜드 M =====
         # M - 네이버 - CP
-        {
-            "BRD_CD": "M",
-            "SALE_DT": "2024-01-10",
-            "SHOP_ID": "NAVER01",
-            "SHOP_NM": "네이버",
-            "PART_CD": "3ACP8801N",   # CP
-            "QTY": 6,
-            "SALE_AMT": 480000,
-        },
+        {"BRD_CD": "M", "SALE_DT": "2024-01-10", "SHOP_ID": "NAVER01",
+         "SHOP_NM": "네이버", "PART_CD": "3ACP8801N", "QTY": 6, "SALE_AMT": 480000},
         # M - 네이버 - DJ
-        {
-            "BRD_CD": "M",
-            "SALE_DT": "2024-01-11",
-            "SHOP_ID": "NAVER01",
-            "SHOP_NM": "네이버",
-            "PART_CD": "3ADJ3301N",   # DJ
-            "QTY": 3,
-            "SALE_AMT": 310000,
-        },
+        {"BRD_CD": "M", "SALE_DT": "2024-01-11", "SHOP_ID": "NAVER01",
+         "SHOP_NM": "네이버", "PART_CD": "3ADJ3301N", "QTY": 3, "SALE_AMT": 300000},
         # M - 무신사 - CP
-        {
-            "BRD_CD": "M",
-            "SALE_DT": "2024-01-12",
-            "SHOP_ID": "MUSINSA01",
-            "SHOP_NM": "무신사",
-            "PART_CD": "3ACP8802N",   # CP
-            "QTY": 4,
-            "SALE_AMT": 360000,
-        },
+        {"BRD_CD": "M", "SALE_DT": "2024-01-12", "SHOP_ID": "MUSINSA01",
+         "SHOP_NM": "무신사", "PART_CD": "3ACP8802N", "QTY": 4, "SALE_AMT": 350000},
         # M - 무신사 - DJ
-        {
-            "BRD_CD": "M",
-            "SALE_DT": "2024-01-13",
-            "SHOP_ID": "MUSINSA01",
-            "SHOP_NM": "무신사",
-            "PART_CD": "3ADJ3302N",   # DJ
-            "QTY": 5,
-            "SALE_AMT": 420000,
-        },
+        {"BRD_CD": "M", "SALE_DT": "2024-01-13", "SHOP_ID": "MUSINSA01",
+         "SHOP_NM": "무신사", "PART_CD": "3ADJ3302N", "QTY": 5, "SALE_AMT": 430000},
     ]
 
     df = pd.DataFrame(rows)
@@ -157,49 +100,54 @@ else:
         .reset_index()
     )
 
-st.subheader("채널 · 카테고리별 매출 vs 수량 분포")
+    st.subheader("채널 · 카테고리별 매출 vs 수량 분포")
 
-fig = px.scatter(
-    scatter_df,
-    x="SALE_AMT",
-    y="QTY",
-    color="SHOP_NM",
-    text="CAT",
-    size="SALE_AMT",
-    size_max=60,  # 점 너무 커지는 것 방지
-    labels={"SALE_AMT": "매출", "QTY": "수량"},
-    hover_data={
-        "SHOP_NM": True,
-        "CAT": True,
-        "SALE_AMT": True,
-        "QTY": True,
-    }
-)
+    # 채널 = 색, 카테고리 = 마커 모양
+    fig = px.scatter(
+        scatter_df,
+        x="SALE_AMT",
+        y="QTY",
+        color="SHOP_NM",
+        symbol="CAT",
+        hover_name="CAT",
+        hover_data={"SHOP_NM": True, "CAT": True, "SALE_AMT": True, "QTY": True},
+        labels={"SALE_AMT": "매출", "QTY": "수량"},
+    )
 
-# 점 테두리 추가 (시인성 ↑)
-fig.update_traces(
-    marker=dict(
-        line=dict(width=1, color="black")
-    ),
-    textfont=dict(size=14)
-)
+    # 점 스타일 정리
+    fig.update_traces(
+        marker=dict(size=18, line=dict(width=1, color="white")),
+        textposition="top center",
+        text=scatter_df["CAT"],  # 점 위에 CP/DJ 표시
+    )
 
-# 레이아웃 더 깔끔하게
-fig.update_layout(
-    title_font_size=20,
-    xaxis=dict(
-        title="매출",
-        gridcolor="rgba(200,200,200,0.3)",
-        zeroline=False,
-        tickformat=",d"
-    ),
-    yaxis=dict(
-        title="수량",
-        gridcolor="rgba(200,200,200,0.3)",
-        zeroline=False,
-    ),
-    legend_title_text="채널",
-    plot_bgcolor="white",
-)
+    # 레이아웃 정리
+    fig.update_layout(
+        height=500,
+        title_font_size=20,
+        xaxis=dict(
+            title="매출",
+            gridcolor="rgba(220,220,220,0.4)",
+            zeroline=False,
+            tickformat=",d",
+        ),
+        yaxis=dict(
+            title="수량",
+            gridcolor="rgba(220,220,220,0.4)",
+            zeroline=False,
+        ),
+        legend_title_text="채널",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+        ),
+        plot_bgcolor="white",
+    )
 
-st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+    with st.expander("📄 집계 데이터 보기"):
+        st.dataframe(scatter_df)
